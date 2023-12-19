@@ -34,6 +34,7 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
     private Result callResult;
     private ActivityPluginBinding activityBinding;
     private Integer reqCode = 8787;
+    private EventChannel eventChannel;
     private EventChannel.EventSink eventSink;
 
 
@@ -42,6 +43,8 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
         context = flutterPluginBinding.getApplicationContext();
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "tappay");
         channel.setMethodCallHandler(this);
+        eventChannel = new EventChannel(flutterPluginBinding.getBinaryMessenger(), "tappayEvent");
+        eventChannel.setStreamHandler(this);
     }
 
 
@@ -59,6 +62,8 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         channel.setMethodCallHandler(null);
+        channel = null;
+        eventChannel = null;
     }
 
     private void initialize() {
@@ -102,8 +107,8 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
     public boolean onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == reqCode) {
             assert data != null;
-            if (data.hasExtra("token")) {
-                eventSink.success(data.getStringExtra("token"));
+            if (data.hasExtra("prime")) {
+                eventSink.success(data.getStringExtra("prime"));
             } else if (data.hasExtra("error")) {
                 eventSink.error(data.getStringExtra("error"), null, null);
             } else {

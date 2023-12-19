@@ -28,4 +28,6 @@ class Tappay {
       throw TappayPluginException(message: e.message ?? e.code);
     }
   }
+
+  Stream<String> get onPrimeReceived => TappayPlatform.instance.onPrimeReceived;
 }

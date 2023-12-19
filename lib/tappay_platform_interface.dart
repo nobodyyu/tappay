@@ -37,4 +37,6 @@ abstract class TappayPlatform extends PlatformInterface {
       required ServerType serverType}) {
     throw UnimplementedError('showPayment() has not been implemented.');
   }
+
+  Stream<String> get onPrimeReceived;
 }

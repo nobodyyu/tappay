@@ -146,15 +146,20 @@ public class PaymentActivity extends Activity implements View.OnClickListener {
             statusTV.setText(resultStr);
             Log.d(TAG, resultStr);
 
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("prime", prime);
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
         };
-        TPDGetPrimeFailureCallback tpdGetPrimeFailureCallback = new TPDGetPrimeFailureCallback() {
-            @Override
-            public void onFailure(int status, String msg) {
-                Log.d("TPDirect createToken", "failure: " + status + ": " + msg);
-                Toast.makeText(PaymentActivity.this,
-                        "Create Token Failed\n" + status + ": " + msg,
-                        Toast.LENGTH_SHORT).show();
-            }
+        TPDGetPrimeFailureCallback tpdGetPrimeFailureCallback = (status, msg) -> {
+            Log.d("TPDirect createToken", "failure: " + status + ": " + msg);
+            Toast.makeText(PaymentActivity.this,
+                    "Create Token Failed\n" + status + ": " + msg,
+                    Toast.LENGTH_SHORT).show();
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("error", status + ": " + msg);
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
         };
 
         tpdCard = TPDCard.setup(tpdForm).onSuccessCallback(tpdCardGetPrimeSuccessCallback)
@@ -189,13 +194,20 @@ public class PaymentActivity extends Activity implements View.OnClickListener {
 
             statusTV.setText(resultStr);
             Log.d(TAG, resultStr);
-
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("ccvPrime", ccvPrime);
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
         };
         TPDGetPrimeFailureCallback tpdGetCcvPrimeFailureCallback = (status, msg) -> {
             Log.d("TPDirect Get Ccv Prime", "failure: " + status + ": " + msg);
             Toast.makeText(PaymentActivity.this,
                     "Get Ccv Prime Failed\n" + status + ": " + msg,
                     Toast.LENGTH_SHORT).show();
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("error", status + ": " + msg);
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
         };
 
         tpdCcv = TPDCcv.setup(tpdCcvForm).onSuccessCallback(tpdCcvGetPrimeSuccessCallback)

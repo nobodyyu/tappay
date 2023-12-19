@@ -18,6 +18,9 @@ class MockTappayPlatform
       {required int appId,
       required String appKey,
       required ServerType serverType}) async {}
+
+  @override
+  Stream<String> get onPrimeReceived => throw UnimplementedError();
 }
 
 void main() {

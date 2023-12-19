@@ -9,6 +9,7 @@ class MethodChannelTappay extends TappayPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
   final methodChannel = const MethodChannel('tappay');
+  final eventChannel = const EventChannel('tappayEvent');
 
   @override
   Future<void> initialize(
@@ -41,4 +42,9 @@ class MethodChannelTappay extends TappayPlatform {
       rethrow;
     }
   }
+
+  @override
+  Stream<String> get onPrimeReceived => eventChannel
+      .receiveBroadcastStream()
+      .map((dynamic prime) => prime as String);
 }
