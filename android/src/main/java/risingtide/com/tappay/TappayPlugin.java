@@ -52,10 +52,16 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         methodCall = call;
         callResult = result;
-        if (call.method.equals("initialize")) {
-            initialize();
-        } else if (call.method.equals("showPayment")) {
-            showPayment();
+        switch (call.method) {
+            case "initialize":
+                initialize();
+                break;
+            case "showPayment":
+                showPayment();
+                break;
+            case "showLinePay":
+                showLinePay();
+                break;
         }
     }
 
@@ -81,6 +87,20 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
 
     private void showPayment() {
         Intent intent = new Intent(activityBinding.getActivity(), PaymentActivity.class);
+        Integer appId = methodCall.argument("appId");
+        String appKey = methodCall.argument("appKey");
+        String serverType = methodCall.argument("serverType");
+
+        intent.putExtra("appId", appId);
+        intent.putExtra("appKey", appKey);
+        intent.putExtra("serverType", serverType);
+
+        activityBinding.getActivity().startActivityForResult(intent, reqCode);
+        callResult.success("SUCCESS");
+    }
+
+    private void showLinePay() {
+        Intent intent = new Intent(activityBinding.getActivity(), LinePayActivity.class);
         Integer appId = methodCall.argument("appId");
         String appKey = methodCall.argument("appKey");
         String serverType = methodCall.argument("serverType");
