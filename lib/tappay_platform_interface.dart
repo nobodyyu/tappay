@@ -38,5 +38,12 @@ abstract class TappayPlatform extends PlatformInterface {
     throw UnimplementedError('showPayment() has not been implemented.');
   }
 
+  Future<void> showLinePay(
+      {required int appId,
+      required String appKey,
+      required ServerType serverType}) {
+    throw UnimplementedError('showLinePay() has not been implemented.');
+  }
+
   Stream<String> get onPrimeReceived;
 }

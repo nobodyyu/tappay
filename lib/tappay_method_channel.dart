@@ -44,6 +44,22 @@ class MethodChannelTappay extends TappayPlatform {
   }
 
   @override
+  Future<void> showLinePay(
+      {required int appId,
+      required String appKey,
+      required ServerType serverType}) async {
+    try {
+      await methodChannel.invokeMethod<String>('showLinePay', {
+        'appId': appId,
+        'appKey': appKey,
+        'serverType': serverType.toString(),
+      });
+    } on PlatformException catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
   Stream<String> get onPrimeReceived => eventChannel
       .receiveBroadcastStream()
       .map((dynamic prime) => prime as String);

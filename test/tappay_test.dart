@@ -20,6 +20,12 @@ class MockTappayPlatform
       required ServerType serverType}) async {}
 
   @override
+  Future<void> showLinePay(
+      {required int appId,
+      required String appKey,
+      required ServerType serverType}) async {}
+
+  @override
   Stream<String> get onPrimeReceived => throw UnimplementedError();
 }
 

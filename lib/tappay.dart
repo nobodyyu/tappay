@@ -29,5 +29,17 @@ class Tappay {
     }
   }
 
+  Future<void> showLinePay(
+      {required int appId,
+      required String appKey,
+      required ServerType serverType}) async {
+    try {
+      await TappayPlatform.instance
+          .showLinePay(appId: appId, appKey: appKey, serverType: serverType);
+    } on PlatformException catch (e) {
+      throw TappayPluginException(message: e.message ?? e.code);
+    }
+  }
+
   Stream<String> get onPrimeReceived => TappayPlatform.instance.onPrimeReceived;
 }
