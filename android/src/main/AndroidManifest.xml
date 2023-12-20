@@ -5,7 +5,18 @@
     <application>
         <activity
             android:name=".LinePayActivity"
-            android:exported="false" />
+            android:launchMode="singleTask"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:host="risingtide.com"
+                    android:scheme="linepay" />
+            </intent-filter>
+        </activity>
+        >
         <activity
             android:name=".PaymentActivity"
             android:exported="false" />

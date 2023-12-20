@@ -11,13 +11,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.FirebaseFunctionsException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import tech.cherri.tpdirect.api.TPDLinePay;
@@ -36,6 +39,7 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
     private TPDLinePay tpdLinePay;
     private TextView getPrimeResultStateTV;
     private TextView linePayResultTV;
+    private final FirebaseFunctions functions = FirebaseFunctions.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,8 +52,7 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
         TPDServerType serverType = Objects.equals(intent.getStringExtra("serverType"), "sandbox") ? TPDServerType.Sandbox : TPDServerType.Production;
         Log.d(TAG, "SDK version is " + TPDSetup.getVersion());
         //Setup environment.
-        TPDSetup.initInstance(getApplicationContext(),
-                appId, appKey, serverType);
+        TPDSetup.initInstance(getApplicationContext(), appId, appKey, serverType);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions();
         } else {
@@ -81,11 +84,10 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
 
     private void prepareLinePay() {
         boolean isLinePayAvailable = TPDLinePay.isLinePayAvailable(this.getApplicationContext());
-        Toast.makeText(this, "isLinePayAvailable : "
-                + isLinePayAvailable, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "isLinePayAvailable : " + isLinePayAvailable, Toast.LENGTH_SHORT).show();
         try {
-            if (isLinePayAvailable) {
-                tpdLinePay = new TPDLinePay(getApplicationContext(), "www.google.com");
+            if (true) {
+                tpdLinePay = new TPDLinePay(getApplicationContext(), "linepay://risingtide.com");
                 linePayBTN.setEnabled(true);
             } else {
                 throw new TPDLinePayException("LinePay is not available");
@@ -114,14 +116,12 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
 
     @Override
     public void onSuccess(String prime) {
-        String resultStr = "Your prime is " + prime
-                + "\n\nUse below cURL to get payment url with Pay-by-Prime API on your server side: \n"
-                + ApiUtil.generatePayByPrimeCURLForSandBox(prime,
-                Constants.PARTNER_KEY,
-                Constants.MERCHANT_ID);
+        String resultStr = "Your prime is " + prime + "\n\nUse below cURL to get payment url with Pay-by-Prime API on your server side: \n" + ApiUtil.generatePayByPrimeCURLForSandBox(prime, Constants.PARTNER_KEY, Constants.MERCHANT_ID);
 
         showMessage(resultStr);
         Log.d(TAG, resultStr);
+
+        sendTransactionDataToServer();
 
         //Proceed LINE Pay with below function.
 //        tpdLinePay.redirectWithUrl("Your payment url ");
@@ -130,22 +130,6 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
         resultIntent.putExtra("prime", prime);
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
-    }
-
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        handleIncomingIntent(intent);
-    }
-
-    private void handleIncomingIntent(Intent intent) {
-        if (intent.getDataString() != null && intent.getDataString().contains("www.google.com")) {
-            if (tpdLinePay == null) {
-                prepareLinePay();
-            }
-            tpdLinePay.parseToLinePayResult(getApplicationContext(), intent.getData(), this);
-        }
     }
 
     @Override
@@ -157,6 +141,21 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
         finish();
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIncomingIntent(intent);
+    }
+
+    private void handleIncomingIntent(Intent intent) {
+        if (intent.getDataString() != null && intent.getDataString().contains("linepay://risingtide.com")) {
+            if (tpdLinePay == null) {
+                prepareLinePay();
+            }
+            tpdLinePay.parseToLinePayResult(getApplicationContext(), intent.getData(), this);
+        }
+    }
+
     private void showMessage(String s) {
         getPrimeResultStateTV.setText(s);
     }
@@ -164,15 +163,29 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
     @Override
     public void onParseSuccess(TPDLinePayResult tpdLinePayResult) {
         if (tpdLinePayResult != null) {
-            linePayResultTV.setText("status:" + tpdLinePayResult.getStatus()
-                    + "\nrec_trade_id:" + tpdLinePayResult.getRecTradeId()
-                    + "\nbank_transaction_id:" + tpdLinePayResult.getBankTransactionId()
-                    + "\norder_number:" + tpdLinePayResult.getOrderNumber());
+            linePayResultTV.setText("status:" + tpdLinePayResult.getStatus() + "\nrec_trade_id:" + tpdLinePayResult.getRecTradeId() + "\nbank_transaction_id:" + tpdLinePayResult.getBankTransactionId() + "\norder_number:" + tpdLinePayResult.getOrderNumber());
         }
     }
 
     @Override
     public void onParseFail(int status, String msg) {
         linePayResultTV.setText("Parse LINE Pay result failed  status : " + status + " , msg : " + msg);
+    }
+
+    private Task<String> sendTransactionDataToServer() {
+        Map<String, Object> data = new HashMap<>();
+        data.put("text", "");
+        data.put("push", true);
+        return functions.getHttpsCallable("receiveTappayTransactionData").call().continueWith(task -> (String) task.getResult().getData()).addOnCompleteListener(task -> {
+            if (!task.isSuccessful()) {
+                Exception e = task.getException();
+                if (e instanceof FirebaseFunctionsException) {
+                    FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                    FirebaseFunctionsException.Code code = ffe.getCode();
+                    Object details = ffe.getDetails();
+                    Log.d(TAG, code.toString());
+                }
+            }
+        });
     }
 }

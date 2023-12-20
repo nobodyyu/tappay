@@ -31,6 +31,7 @@ android {
 
     defaultConfig {
         minSdkVersion 18
+        multiDexEnabled true
     }
 
     dependencies {
@@ -59,4 +60,7 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
+    implementation(platform("com.google.firebase:firebase-bom:32.6.0"))
+    implementation("com.google.firebase:firebase-functions")
+    implementation 'androidx.multidex:multidex:2.0.1'
 }
