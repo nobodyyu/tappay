@@ -11,11 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import tech.cherri.tpdirect.api.TPDLinePay;
@@ -107,9 +111,9 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
 
     @Override
     public void onSuccess(String prime) {
-        String curlString = ApiUtil.generatePayByPrimeCURLForSandBox(prime, Constants.PARTNER_KEY, Constants.MERCHANT_ID);
+        HashMap<String, Object> data = ApiUtil.generatePayByPrimeDataForSandBox(prime, Constants.PARTNER_KEY, Constants.MERCHANT_ID);
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("curlString", curlString);
+        resultIntent.putExtra("data", data);
         setResult(Activity.RESULT_OK, resultIntent);
         finish();
     }

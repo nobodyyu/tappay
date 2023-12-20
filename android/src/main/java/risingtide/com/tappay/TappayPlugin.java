@@ -129,14 +129,11 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
     public boolean onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == reqCode) {
             assert data != null;
-            Map<String, String> dataFromTapPay = new HashMap<>();
-            if (data.hasExtra("prime")) {
-                dataFromTapPay.put("prime",data.getStringExtra("prime"));
+            Map<String, Object> dataFromTapPay = new HashMap<>();
+            if (data.hasExtra("data")) {
+                dataFromTapPay.put("data", data.getSerializableExtra("prime"));
                 eventSink.success(dataFromTapPay);
-            } else if (data.hasExtra("curlString")) {
-                dataFromTapPay.put("curlString",data.getStringExtra("curlString"));
-                eventSink.success(dataFromTapPay);
-            } else if (data.hasExtra("error")) {
+            }  else if (data.hasExtra("error")) {
                 eventSink.error(data.getStringExtra("error"), null, null);
             } else {
                 eventSink.error("Unexpected Error", null, null);

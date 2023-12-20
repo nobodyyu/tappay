@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 import tech.cherri.tpdirect.api.TPDCard;
@@ -140,14 +141,14 @@ public class PaymentActivity extends Activity implements View.OnClickListener {
                     "cardIdentifier is " + cardIdentifier + "\n\n" +
                     "merchantReferenceInfo is " + merchantReferenceInfo + "\n\n" +
                     "Use below cURL to proceed the payment : \n"
-                    + ApiUtil.generatePayByPrimeCURLForSandBox(prime, Constants.PARTNER_KEY,
+                    + ApiUtil.generatePayByPrimeDataForSandBox(prime, Constants.PARTNER_KEY,
                     Constants.MERCHANT_ID);
-
             statusTV.setText(resultStr);
             Log.d(TAG, resultStr);
 
+            HashMap<String, Object> data = ApiUtil.generatePayByPrimeDataForSandBox(prime, Constants.PARTNER_KEY, Constants.MERCHANT_ID);
             Intent resultIntent = new Intent();
-            resultIntent.putExtra("prime", prime);
+            resultIntent.putExtra("data", data);
             setResult(Activity.RESULT_OK, resultIntent);
             finish();
         };
