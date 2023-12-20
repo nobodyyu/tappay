@@ -17,6 +17,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.appcheck.FirebaseAppCheck;
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
 import java.util.HashMap;
@@ -51,6 +54,12 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
         String appKey = intent.getStringExtra("appKey");
         TPDServerType serverType = Objects.equals(intent.getStringExtra("serverType"), "sandbox") ? TPDServerType.Sandbox : TPDServerType.Production;
         Log.d(TAG, "SDK version is " + TPDSetup.getVersion());
+
+        FirebaseApp.initializeApp(getApplicationContext());
+        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
+        firebaseAppCheck.installAppCheckProviderFactory(
+                PlayIntegrityAppCheckProviderFactory.getInstance());
+
         //Setup environment.
         TPDSetup.initInstance(getApplicationContext(), appId, appKey, serverType);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
