@@ -60,5 +60,5 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.5.3'
     implementation 'androidx.navigation:navigation-ui:2.5.3'
     implementation 'androidx.multidex:multidex:2.0.1'
-    compileOnly files('../example/android/app/libs/tpdirect.aar')
+    implementation fileTree(include: ['*.aar'], dir: 'libs')
 }

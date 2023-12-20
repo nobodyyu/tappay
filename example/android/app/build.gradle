@@ -55,10 +55,6 @@ android {
     }
 }
 
-dependencies {
-    implementation fileTree(dir: "libs", includes: ["tpdirect.aar"])
-}
-
 flutter {
     source '../..'
 }
