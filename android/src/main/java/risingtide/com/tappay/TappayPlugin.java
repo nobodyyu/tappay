@@ -115,6 +115,14 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
         callResult.success("SUCCESS");
     }
 
+    private void redirectToLinePayPage() {
+        Intent intent = new Intent(activityBinding.getActivity(), LinePayReturnActivity.class);
+        String paymentUrl = methodCall.argument("paymentUrl");
+        intent.putExtra("paymentUrl", paymentUrl);
+        activityBinding.getActivity().startActivity(intent);
+        callResult.success("SUCCESS");
+    }
+
     @Override
     public void onListen(Object arguments, EventChannel.EventSink events) {
         eventSink = events;
@@ -133,7 +141,7 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
             if (data.hasExtra("data")) {
                 dataFromTapPay.put("data", data.getSerializableExtra("data"));
                 eventSink.success(dataFromTapPay);
-            }  else if (data.hasExtra("error")) {
+            } else if (data.hasExtra("error")) {
                 eventSink.error(data.getStringExtra("error"), null, null);
             } else {
                 eventSink.error("Unexpected Error", null, null);

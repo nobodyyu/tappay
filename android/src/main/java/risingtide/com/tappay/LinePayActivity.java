@@ -19,25 +19,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import tech.cherri.tpdirect.api.TPDLinePay;
-import tech.cherri.tpdirect.api.TPDLinePayResult;
 import tech.cherri.tpdirect.api.TPDServerType;
 import tech.cherri.tpdirect.api.TPDSetup;
 import tech.cherri.tpdirect.callback.TPDGetPrimeFailureCallback;
 import tech.cherri.tpdirect.callback.TPDLinePayGetPrimeSuccessCallback;
-import tech.cherri.tpdirect.callback.TPDLinePayResultListener;
 import tech.cherri.tpdirect.exception.TPDLinePayException;
 
-public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallback, TPDLinePayGetPrimeSuccessCallback, View.OnClickListener, TPDLinePayResultListener {
+public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallback, TPDLinePayGetPrimeSuccessCallback, View.OnClickListener {
     private static final String TAG = "LinePayActivity";
     private static final int REQUEST_READ_PHONE_STATE = 101;
     private RelativeLayout linePayBTN;
     private TPDLinePay tpdLinePay;
     private TextView getPrimeResultStateTV;
-    private TextView linePayResultTV;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +53,6 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
         } else {
             prepareLinePay();
         }
-        handleIncomingIntent(getIntent());
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -97,7 +92,6 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
         TextView totalAmountTV = findViewById(R.id.totalAmountTV);
         totalAmountTV.setText("Total amount : 1.00 元");
         getPrimeResultStateTV = findViewById(R.id.getPrimeResultStateTV);
-        linePayResultTV = findViewById(R.id.linePayResultTV);
         linePayBTN = findViewById(R.id.linePayBTN);
         linePayBTN.setOnClickListener(this);
     }
@@ -126,34 +120,8 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
         finish();
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        super.onNewIntent(intent);
-        handleIncomingIntent(intent);
-    }
-
-    private void handleIncomingIntent(Intent intent) {
-        if (intent.getDataString() != null && intent.getDataString().contains("linepay://risingtide.com")) {
-            if (tpdLinePay == null) {
-                prepareLinePay();
-            }
-            tpdLinePay.parseToLinePayResult(getApplicationContext(), intent.getData(), this);
-        }
-    }
-
     private void showMessage(String s) {
         getPrimeResultStateTV.setText(s);
     }
 
-    @Override
-    public void onParseSuccess(TPDLinePayResult tpdLinePayResult) {
-        if (tpdLinePayResult != null) {
-            linePayResultTV.setText("status:" + tpdLinePayResult.getStatus() + "\nrec_trade_id:" + tpdLinePayResult.getRecTradeId() + "\nbank_transaction_id:" + tpdLinePayResult.getBankTransactionId() + "\norder_number:" + tpdLinePayResult.getOrderNumber());
-        }
-    }
-
-    @Override
-    public void onParseFail(int status, String msg) {
-        linePayResultTV.setText("Parse LINE Pay result failed  status : " + status + " , msg : " + msg);
-    }
 }
