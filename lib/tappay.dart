@@ -41,6 +41,5 @@ class Tappay {
     }
   }
 
-  Stream<Map<String, String>> get onResultReceived =>
-      TappayPlatform.instance.onResultReceived;
+  Stream<Map> get onResultReceived => TappayPlatform.instance.onResultReceived;
 }

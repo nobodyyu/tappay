@@ -60,7 +60,7 @@ class MethodChannelTappay extends TappayPlatform {
   }
 
   @override
-  Stream<Map<String, String>> get onResultReceived => eventChannel
+  Stream<Map> get onResultReceived => eventChannel
       .receiveBroadcastStream()
-      .map((dynamic event) => event as Map<String, String>);
+      .map((dynamic event) => event as Map);
 }
