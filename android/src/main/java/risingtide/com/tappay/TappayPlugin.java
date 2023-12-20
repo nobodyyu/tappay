@@ -131,7 +131,7 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
             assert data != null;
             Map<String, Object> dataFromTapPay = new HashMap<>();
             if (data.hasExtra("data")) {
-                dataFromTapPay.put("data", data.getSerializableExtra("prime"));
+                dataFromTapPay.put("data", data.getSerializableExtra("data"));
                 eventSink.success(dataFromTapPay);
             }  else if (data.hasExtra("error")) {
                 eventSink.error(data.getStringExtra("error"), null, null);
