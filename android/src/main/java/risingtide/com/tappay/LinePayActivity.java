@@ -79,7 +79,7 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
     }
 
     private void prepareLinePay() {
-        boolean isLinePayAvailable = TPDLinePay.isLinePayAvailable(this.getApplicationContext());
+        boolean isLinePayAvailable = TPDLinePay.isLinePayAvailable(getApplicationContext());
         Toast.makeText(this, "isLinePayAvailable : " + isLinePayAvailable, Toast.LENGTH_SHORT).show();
         try {
             if (isLinePayAvailable) {
@@ -120,12 +120,12 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
         sendTransactionDataToServer();
 
         //Proceed LINE Pay with below function.
-//        tpdLinePay.redirectWithUrl("Your payment url ");
+        //tpdLinePay.redirectWithUrl("Your payment url ");
 
         Intent resultIntent = new Intent();
         resultIntent.putExtra("prime", prime);
         setResult(Activity.RESULT_OK, resultIntent);
-        finish();
+        //finish();
     }
 
     @Override
@@ -134,7 +134,7 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
         Intent resultIntent = new Intent();
         resultIntent.putExtra("error", status + ": " + msg);
         setResult(Activity.RESULT_OK, resultIntent);
-        finish();
+        //finish();
     }
 
     @Override
