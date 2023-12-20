@@ -16,10 +16,12 @@
                     android:scheme="linepay" />
             </intent-filter>
         </activity>
-        >
         <activity
             android:name=".PaymentActivity"
             android:exported="false" />
     </application>
-
+    <queries>
+        <!-- for line pay open -->
+        <package android:name="jp.naver.line.android" />
+    </queries>
 </manifest>

@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
 
   Future<void> showPayment() async {
     try {
-      await _tappayPlugin.showPayment(
+      await _tappayPlugin.showLinePay(
         appId: 138112,
         appKey:
             'app_7ugMRqJ1QjAeXoCcEtqVYFwoptf5MPdZ0IO77awLzxv2p3m7ByW2ELjHQppt',

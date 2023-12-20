@@ -64,7 +64,6 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
     @RequiresApi(Build.VERSION_CODES.M)
     private void requestPermissions() {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_PHONE_STATE) == PackageManager.PERMISSION_GRANTED) {
-            Log.d(TAG, "PERMISSION IS ALREADY GRANTED");
             prepareLinePay();
         } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_PHONE_STATE}, REQUEST_READ_PHONE_STATE);
@@ -75,9 +74,6 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == REQUEST_READ_PHONE_STATE) {
-            if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                Log.d(TAG, "PERMISSION_GRANTED");
-            }
             prepareLinePay();
         }
     }
@@ -86,7 +82,7 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
         boolean isLinePayAvailable = TPDLinePay.isLinePayAvailable(this.getApplicationContext());
         Toast.makeText(this, "isLinePayAvailable : " + isLinePayAvailable, Toast.LENGTH_SHORT).show();
         try {
-            if (true) {
+            if (isLinePayAvailable) {
                 tpdLinePay = new TPDLinePay(getApplicationContext(), "linepay://risingtide.com");
                 linePayBTN.setEnabled(true);
             } else {
