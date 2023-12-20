@@ -61,8 +61,8 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
             case "showPayment":
                 showPayment();
                 break;
-            case "showLinePay":
-                showLinePay();
+            case "linePay":
+                linePay();
                 break;
             case "redirectToLinePayPage":
                 redirectToLinePayPage();
@@ -104,16 +104,14 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
         callResult.success("SUCCESS");
     }
 
-    private void showLinePay() {
+    private void linePay() {
         Intent intent = new Intent(activityBinding.getActivity(), LinePayActivity.class);
         Integer appId = methodCall.argument("appId");
         String appKey = methodCall.argument("appKey");
         String serverType = methodCall.argument("serverType");
-
         intent.putExtra("appId", appId);
         intent.putExtra("appKey", appKey);
         intent.putExtra("serverType", serverType);
-
         activityBinding.getActivity().startActivityForResult(intent, reqCode);
         callResult.success("SUCCESS");
     }

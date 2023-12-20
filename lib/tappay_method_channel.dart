@@ -44,12 +44,12 @@ class MethodChannelTappay extends TappayPlatform {
   }
 
   @override
-  Future<void> showLinePay(
+  Future<void> linePay(
       {required int appId,
       required String appKey,
       required ServerType serverType}) async {
     try {
-      await methodChannel.invokeMethod<String>('showLinePay', {
+      await methodChannel.invokeMethod<String>('linePay', {
         'appId': appId,
         'appKey': appKey,
         'serverType': serverType.toString(),

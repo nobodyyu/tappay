@@ -35,7 +35,7 @@ class Tappay {
       required ServerType serverType}) async {
     try {
       await TappayPlatform.instance
-          .showLinePay(appId: appId, appKey: appKey, serverType: serverType);
+          .linePay(appId: appId, appKey: appKey, serverType: serverType);
     } on PlatformException catch (e) {
       throw TappayPluginException(message: e.message ?? e.code);
     }
