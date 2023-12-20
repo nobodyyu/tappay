@@ -41,5 +41,14 @@ class Tappay {
     }
   }
 
+  Future<void> redirectToLinePayPage({required String paymentUrl}) async {
+    try {
+      await TappayPlatform.instance
+          .redirectToLinePayPage(paymentUrl: paymentUrl);
+    } on PlatformException catch (e) {
+      throw TappayPluginException(message: e.message ?? e.code);
+    }
+  }
+
   Stream<Map> get onResultReceived => TappayPlatform.instance.onResultReceived;
 }

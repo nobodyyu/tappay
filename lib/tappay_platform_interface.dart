@@ -45,5 +45,10 @@ abstract class TappayPlatform extends PlatformInterface {
     throw UnimplementedError('showLinePay() has not been implemented.');
   }
 
+  Future<void> redirectToLinePayPage({required String paymentUrl}) {
+    throw UnimplementedError(
+        'redirectToLinePayPage() has not been implemented.');
+  }
+
   Stream<Map> get onResultReceived;
 }

@@ -60,6 +60,17 @@ class MethodChannelTappay extends TappayPlatform {
   }
 
   @override
+  Future<void> redirectToLinePayPage({required String paymentUrl}) async {
+    try {
+      await methodChannel.invokeMethod<String>('redirectToLinePayPage', {
+        'paymentUrl': paymentUrl,
+      });
+    } on PlatformException catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
   Stream<Map> get onResultReceived => eventChannel
       .receiveBroadcastStream()
       .map((dynamic event) => event as Map);

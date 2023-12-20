@@ -26,6 +26,9 @@ class MockTappayPlatform
       required ServerType serverType}) async {}
 
   @override
+  Future<void> redirectToLinePayPage({required String paymentUrl}) async {}
+
+  @override
   Stream<Map> get onResultReceived => throw UnimplementedError();
 }
 

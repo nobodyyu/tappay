@@ -64,6 +64,9 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
             case "showLinePay":
                 showLinePay();
                 break;
+            case "redirectToLinePayPage":
+                redirectToLinePayPage();
+                break;
         }
     }
 
