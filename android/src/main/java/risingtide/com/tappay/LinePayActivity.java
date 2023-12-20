@@ -16,14 +16,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.FirebaseApp;
-import com.google.firebase.appcheck.FirebaseAppCheck;
-import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory;
-import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.FirebaseFunctionsException;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 import tech.cherri.tpdirect.api.TPDLinePay;
@@ -42,7 +34,6 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
     private TPDLinePay tpdLinePay;
     private TextView getPrimeResultStateTV;
     private TextView linePayResultTV;
-    private final FirebaseFunctions functions = FirebaseFunctions.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +45,6 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
         String appKey = intent.getStringExtra("appKey");
         TPDServerType serverType = Objects.equals(intent.getStringExtra("serverType"), "sandbox") ? TPDServerType.Sandbox : TPDServerType.Production;
         Log.d(TAG, "SDK version is " + TPDSetup.getVersion());
-
-        FirebaseApp.initializeApp(getApplicationContext());
-        FirebaseAppCheck firebaseAppCheck = FirebaseAppCheck.getInstance();
-        firebaseAppCheck.installAppCheckProviderFactory(
-                PlayIntegrityAppCheckProviderFactory.getInstance());
 
         //Setup environment.
         TPDSetup.initInstance(getApplicationContext(), appId, appKey, serverType);
@@ -121,29 +107,19 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
 
     @Override
     public void onSuccess(String prime) {
-        String resultStr = "Your prime is " + prime + "\n\nUse below cURL to get payment url with Pay-by-Prime API on your server side: \n" + ApiUtil.generatePayByPrimeCURLForSandBox(prime, Constants.PARTNER_KEY, Constants.MERCHANT_ID);
-
-        showMessage(resultStr);
-        Log.d(TAG, resultStr);
-
-        sendTransactionDataToServer();
-
-        //Proceed LINE Pay with below function.
-        //tpdLinePay.redirectWithUrl("Your payment url ");
-
+        String curlString = ApiUtil.generatePayByPrimeCURLForSandBox(prime, Constants.PARTNER_KEY, Constants.MERCHANT_ID);
         Intent resultIntent = new Intent();
-        resultIntent.putExtra("prime", prime);
+        resultIntent.putExtra("curlString", curlString);
         setResult(Activity.RESULT_OK, resultIntent);
-        //finish();
+        finish();
     }
 
     @Override
     public void onFailure(int status, String msg) {
-        showMessage("GetPrime failed , status = " + status + ", msg : " + msg);
         Intent resultIntent = new Intent();
         resultIntent.putExtra("error", status + ": " + msg);
         setResult(Activity.RESULT_OK, resultIntent);
-        //finish();
+        finish();
     }
 
     @Override
@@ -175,22 +151,5 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
     @Override
     public void onParseFail(int status, String msg) {
         linePayResultTV.setText("Parse LINE Pay result failed  status : " + status + " , msg : " + msg);
-    }
-
-    private Task<String> sendTransactionDataToServer() {
-        Map<String, Object> data = new HashMap<>();
-        data.put("text", "");
-        data.put("push", true);
-        return functions.getHttpsCallable("receiveTappayTransactionData").call().continueWith(task -> (String) task.getResult().getData()).addOnCompleteListener(task -> {
-            if (!task.isSuccessful()) {
-                Exception e = task.getException();
-                if (e instanceof FirebaseFunctionsException) {
-                    FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
-                    FirebaseFunctionsException.Code code = ffe.getCode();
-                    Object details = ffe.getDetails();
-                    Log.d(TAG, code.toString());
-                }
-            }
-        });
     }
 }

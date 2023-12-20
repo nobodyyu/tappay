@@ -60,7 +60,7 @@ class MethodChannelTappay extends TappayPlatform {
   }
 
   @override
-  Stream<String> get onPrimeReceived => eventChannel
+  Stream<Map<String, String>> get onResultReceived => eventChannel
       .receiveBroadcastStream()
-      .map((dynamic prime) => prime as String);
+      .map((dynamic event) => event as Map<String, String>);
 }

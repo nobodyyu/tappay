@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="risingtide.com.tappay">
-
+    <queries>
+        <!-- for line pay open -->
+        <package android:name="jp.naver.line.android" />
+    </queries>
     <application>
         <activity
-            android:name=".LinePayActivity"
-            android:launchMode="singleTask"
-            android:exported="true">
+            android:name=".LinePayReturnActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -16,12 +19,14 @@
                     android:scheme="linepay" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".LinePayActivity"
+            android:exported="false" />
+
         <activity
             android:name=".PaymentActivity"
             android:exported="false" />
     </application>
-    <queries>
-        <!-- for line pay open -->
-        <package android:name="jp.naver.line.android" />
-    </queries>
+
 </manifest>

@@ -26,7 +26,8 @@ class MockTappayPlatform
       required ServerType serverType}) async {}
 
   @override
-  Stream<String> get onPrimeReceived => throw UnimplementedError();
+  Stream<Map<String, String>> get onResultReceived =>
+      throw UnimplementedError();
 }
 
 void main() {

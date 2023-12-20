@@ -6,6 +6,8 @@ import android.content.Intent;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -127,8 +129,13 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
     public boolean onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == reqCode) {
             assert data != null;
+            Map<String, String> dataFromTapPay = new HashMap<>();
             if (data.hasExtra("prime")) {
-                eventSink.success(data.getStringExtra("prime"));
+                dataFromTapPay.put("prime",data.getStringExtra("prime"));
+                eventSink.success(dataFromTapPay);
+            } else if (data.hasExtra("curlString")) {
+                dataFromTapPay.put("curlString",data.getStringExtra("curlString"));
+                eventSink.success(dataFromTapPay);
             } else if (data.hasExtra("error")) {
                 eventSink.error(data.getStringExtra("error"), null, null);
             } else {

@@ -45,5 +45,5 @@ abstract class TappayPlatform extends PlatformInterface {
     throw UnimplementedError('showLinePay() has not been implemented.');
   }
 
-  Stream<String> get onPrimeReceived;
+  Stream<Map<String, String>> get onResultReceived;
 }
