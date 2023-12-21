@@ -29,7 +29,7 @@ class Tappay {
     }
   }
 
-  Future<void> showLinePay(
+  Future<void> linePay(
       {required int appId,
       required String appKey,
       required ServerType serverType}) async {
