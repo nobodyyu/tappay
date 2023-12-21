@@ -8,9 +8,9 @@ public class ApiUtil {
         String partnerKey = (String) tpPayByPrimeModel.get("partnerKey");
         String merchantId = (String) tpPayByPrimeModel.get("merchantId");
         int amount = (int) tpPayByPrimeModel.get("amount");
-        int currency = -1;
+        String currency = null;
         if (tpPayByPrimeModel.containsKey("currency")) {
-            currency = (int) tpPayByPrimeModel.get("currency");
+            currency = (String) tpPayByPrimeModel.get("currency");
         }
         String orderNumber = null;
         if (tpPayByPrimeModel.containsKey("orderNumber")) {
@@ -89,7 +89,7 @@ public class ApiUtil {
         data.put("partner_key", partnerKey);
         data.put("merchant_id", merchantId);
         data.put("amount", amount);
-        if (currency != -1) {
+        if (currency != null) {
             data.put("currency", currency);
         }
         if (orderNumber != null) {
