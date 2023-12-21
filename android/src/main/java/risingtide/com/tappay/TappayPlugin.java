@@ -95,10 +95,12 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
         Integer appId = methodCall.argument("appId");
         String appKey = methodCall.argument("appKey");
         String serverType = methodCall.argument("serverType");
+        HashMap<String, Object> tpPayByPrimeModel = methodCall.argument("tpPayByPrimeModel");
 
         intent.putExtra("appId", appId);
         intent.putExtra("appKey", appKey);
         intent.putExtra("serverType", serverType);
+        intent.putExtra("tpPayByPrimeModel", tpPayByPrimeModel);
 
         activityBinding.getActivity().startActivityForResult(intent, reqCode);
         callResult.success("SUCCESS");
@@ -109,9 +111,11 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
         Integer appId = methodCall.argument("appId");
         String appKey = methodCall.argument("appKey");
         String serverType = methodCall.argument("serverType");
+        HashMap<String, Object> tpPayByPrimeModel = methodCall.argument("tpPayByPrimeModel");
         intent.putExtra("appId", appId);
         intent.putExtra("appKey", appKey);
         intent.putExtra("serverType", serverType);
+        intent.putExtra("tpPayByPrimeModel", tpPayByPrimeModel);
         activityBinding.getActivity().startActivityForResult(intent, reqCode);
         callResult.success("SUCCESS");
     }

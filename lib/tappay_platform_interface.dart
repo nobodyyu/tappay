@@ -1,5 +1,6 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:tappay/server_type.dart';
+import 'package:tappay/tp_pay_by_prime_model.dart';
 
 import 'tappay_method_channel.dart';
 
@@ -38,10 +39,12 @@ abstract class TappayPlatform extends PlatformInterface {
     throw UnimplementedError('showPayment() has not been implemented.');
   }
 
-  Future<void> linePay(
-      {required int appId,
-      required String appKey,
-      required ServerType serverType}) {
+  Future<void> linePay({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) {
     throw UnimplementedError('showLinePay() has not been implemented.');
   }
 

@@ -50,6 +50,7 @@ public class PaymentActivity extends Activity implements View.OnClickListener {
     private Integer appId;
     private String appKey;
     private TPDServerType serverType;
+    private HashMap<String, Object> tpPayByPrimeModel;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +61,7 @@ public class PaymentActivity extends Activity implements View.OnClickListener {
         appId = intent.getIntExtra("appId", 0);
         appKey = intent.getStringExtra("appKey");
         serverType = Objects.equals(intent.getStringExtra("serverType"), "sandbox") ? TPDServerType.Sandbox : TPDServerType.Production;
+        tpPayByPrimeModel = (HashMap<String, Object>) intent.getSerializableExtra("tpPayByPrimeModel");
         Log.d(TAG, "SDK version is " + TPDSetup.getVersion());
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             requestPermissions();
@@ -141,12 +143,11 @@ public class PaymentActivity extends Activity implements View.OnClickListener {
                     "cardIdentifier is " + cardIdentifier + "\n\n" +
                     "merchantReferenceInfo is " + merchantReferenceInfo + "\n\n" +
                     "Use below cURL to proceed the payment : \n"
-                    + ApiUtil.generatePayByPrimeDataForSandBox(prime, Constants.PARTNER_KEY,
-                    Constants.MERCHANT_ID);
+                    + ApiUtil.generatePayByPrimeDataForSandBox(prime, tpPayByPrimeModel);
             statusTV.setText(resultStr);
             Log.d(TAG, resultStr);
 
-            HashMap<String, Object> data = ApiUtil.generatePayByPrimeDataForSandBox(prime, Constants.PARTNER_KEY, Constants.MERCHANT_ID);
+            HashMap<String, Object> data = ApiUtil.generatePayByPrimeDataForSandBox(prime, tpPayByPrimeModel);
             Intent resultIntent = new Intent();
             resultIntent.putExtra("data", data);
             setResult(Activity.RESULT_OK, resultIntent);

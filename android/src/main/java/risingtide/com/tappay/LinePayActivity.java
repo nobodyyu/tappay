@@ -3,6 +3,7 @@ package risingtide.com.tappay;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -15,6 +16,7 @@ import tech.cherri.tpdirect.exception.TPDLinePayException;
 
 public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallback, TPDLinePayGetPrimeSuccessCallback {
 
+    private HashMap<String, Object> tpPayByPrimeModel;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +25,7 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
         int appId = intent.getIntExtra("appId", 0);
         String appKey = intent.getStringExtra("appKey");
         TPDServerType serverType = Objects.equals(intent.getStringExtra("serverType"), "sandbox") ? TPDServerType.Sandbox : TPDServerType.Production;
+        tpPayByPrimeModel = (HashMap<String, Object>) intent.getSerializableExtra("tpPayByPrimeModel");
         //Setup environment.
         TPDSetup.initInstance(getApplicationContext(), appId, appKey, serverType);
         startLinePay();
@@ -47,7 +50,7 @@ public class LinePayActivity extends Activity implements TPDGetPrimeFailureCallb
 
     @Override
     public void onSuccess(String prime) {
-        HashMap<String, Object> data = ApiUtil.generatePayByPrimeDataForSandBox(prime, Constants.PARTNER_KEY, Constants.MERCHANT_ID);
+        HashMap<String, Object> data = ApiUtil.generatePayByPrimeDataForSandBox(prime, tpPayByPrimeModel);
         Intent resultIntent = new Intent();
         resultIntent.putExtra("data", data);
         setResult(Activity.RESULT_OK, resultIntent);

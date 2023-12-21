@@ -1,5 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:tappay/tappay_plugin_exception.dart';
+import 'package:tappay/tp_pay_by_prime_model.dart';
 
 import 'server_type.dart';
 import 'tappay_platform_interface.dart';
@@ -29,13 +30,19 @@ class Tappay {
     }
   }
 
-  Future<void> linePay(
-      {required int appId,
-      required String appKey,
-      required ServerType serverType}) async {
+  Future<void> linePay({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) async {
     try {
-      await TappayPlatform.instance
-          .linePay(appId: appId, appKey: appKey, serverType: serverType);
+      await TappayPlatform.instance.linePay(
+        appId: appId,
+        appKey: appKey,
+        serverType: serverType,
+        tpPayByPrimeModel: tpPayByPrimeModel,
+      );
     } on PlatformException catch (e) {
       throw TappayPluginException(message: e.message ?? e.code);
     }

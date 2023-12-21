@@ -3,6 +3,7 @@ import 'package:tappay/server_type.dart';
 import 'dart:async';
 import 'package:tappay/tappay.dart';
 import 'package:tappay/tappay_plugin_exception.dart';
+import 'package:tappay/tp_pay_by_prime_model.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,6 +31,17 @@ class _MyAppState extends State<MyApp> {
         appId: 0,
         appKey: '',
         serverType: ServerType.sandbox,
+        tpPayByPrimeModel: TPPayByPrimeModel(
+          partnerKey: '',
+          merchantId: '',
+          amount: 0,
+          details: '',
+          cardHolder: CardHolder(
+            phoneNumber: '',
+            name: '',
+            email: '',
+          ),
+        ),
       );
     } on TappayPluginException catch (_) {
       rethrow;

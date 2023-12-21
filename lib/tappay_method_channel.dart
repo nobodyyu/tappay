@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:tappay/tp_pay_by_prime_model.dart';
 
 import 'server_type.dart';
 import 'tappay_platform_interface.dart';
@@ -44,15 +45,18 @@ class MethodChannelTappay extends TappayPlatform {
   }
 
   @override
-  Future<void> linePay(
-      {required int appId,
-      required String appKey,
-      required ServerType serverType}) async {
+  Future<void> linePay({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) async {
     try {
       await methodChannel.invokeMethod<String>('linePay', {
         'appId': appId,
         'appKey': appKey,
         'serverType': serverType.toString(),
+        'tpPayByPrimeModel': tpPayByPrimeModel.toMap(),
       });
     } on PlatformException catch (_) {
       rethrow;
