@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 import tech.cherri.tpdirect.api.TPDLinePay;
 import tech.cherri.tpdirect.api.TPDLinePayResult;
 import tech.cherri.tpdirect.callback.TPDLinePayResultListener;
@@ -31,13 +33,28 @@ public class LinePayReturnActivity extends Activity implements TPDLinePayResultL
     @Override
     public void onParseSuccess(TPDLinePayResult tpdLinePayResult) {
         if (tpdLinePayResult != null) {
-            Toast.makeText(this, "status:" + tpdLinePayResult.getStatus() + "\nrec_trade_id:" + tpdLinePayResult.getRecTradeId() + "\nbank_transaction_id:" + tpdLinePayResult.getBankTransactionId() + "\norder_number:" + tpdLinePayResult.getOrderNumber(), Toast.LENGTH_SHORT).show();
+            int status = tpdLinePayResult.getStatus();
+            String recTradeId = tpdLinePayResult.getRecTradeId();
+            String bankTransactionId = tpdLinePayResult.getBankTransactionId();
+            String orderNumber = tpdLinePayResult.getOrderNumber();
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("status", status);
+            data.put("recTradeId", recTradeId);
+            data.put("bankTransactionId", bankTransactionId);
+            data.put("orderNumber", orderNumber);
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("data", data);
+            setResult(Activity.RESULT_OK, resultIntent);
+            finish();
         }
     }
 
     @Override
     public void onParseFail(int status, String msg) {
-        Toast.makeText(this, "Parse LINE Pay result failed  status : " + status + " , msg : " + msg, Toast.LENGTH_SHORT).show();
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("error", status + ": " + msg);
+        setResult(Activity.RESULT_OK, resultIntent);
+        finish();
     }
 
     @Override
