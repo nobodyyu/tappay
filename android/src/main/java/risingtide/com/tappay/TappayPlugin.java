@@ -120,7 +120,7 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
         Intent intent = new Intent(activityBinding.getActivity(), LinePayReturnActivity.class);
         String paymentUrl = methodCall.argument("paymentUrl");
         intent.putExtra("paymentUrl", paymentUrl);
-        activityBinding.getActivity().startActivity(intent);
+        activityBinding.getActivity().startActivityForResult(intent, reqCode);
         callResult.success("SUCCESS");
     }
 
