@@ -57,5 +57,32 @@ class Tappay {
     }
   }
 
+  Future<void> jkoPay({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) async {
+    try {
+      await TappayPlatform.instance.jkoPay(
+        appId: appId,
+        appKey: appKey,
+        serverType: serverType,
+        tpPayByPrimeModel: tpPayByPrimeModel,
+      );
+    } on PlatformException catch (e) {
+      throw TappayPluginException(message: e.message ?? e.code);
+    }
+  }
+
+  Future<void> redirectToJkoPayPage({required String paymentUrl}) async {
+    try {
+      await TappayPlatform.instance
+          .redirectToJkoPayPage(paymentUrl: paymentUrl);
+    } on PlatformException catch (e) {
+      throw TappayPluginException(message: e.message ?? e.code);
+    }
+  }
+
   Stream<Map> get onResultReceived => TappayPlatform.instance.onResultReceived;
 }

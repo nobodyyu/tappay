@@ -32,6 +32,17 @@ class MockTappayPlatform
   Future<void> redirectToLinePayPage({required String paymentUrl}) async {}
 
   @override
+  Future<void> jkoPay({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) async {}
+
+  @override
+  Future<void> redirectToJkoPayPage({required String paymentUrl}) async {}
+
+  @override
   Stream<Map> get onResultReceived => throw UnimplementedError();
 }
 

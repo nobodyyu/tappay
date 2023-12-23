@@ -75,6 +75,36 @@ class MethodChannelTappay extends TappayPlatform {
   }
 
   @override
+  Future<void> jkoPay({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) async {
+    try {
+      await methodChannel.invokeMethod<String>('jkoPay', {
+        'appId': appId,
+        'appKey': appKey,
+        'serverType': serverType.toString(),
+        'tpPayByPrimeModel': tpPayByPrimeModel.toMap(),
+      });
+    } on PlatformException catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> redirectToJkoPayPage({required String paymentUrl}) async {
+    try {
+      await methodChannel.invokeMethod<String>('redirectToJkoPayPage', {
+        'paymentUrl': paymentUrl,
+      });
+    } on PlatformException catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
   Stream<Map> get onResultReceived => eventChannel
       .receiveBroadcastStream()
       .map((dynamic event) => event as Map);

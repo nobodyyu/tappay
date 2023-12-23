@@ -45,12 +45,26 @@ abstract class TappayPlatform extends PlatformInterface {
     required ServerType serverType,
     required TPPayByPrimeModel tpPayByPrimeModel,
   }) {
-    throw UnimplementedError('showLinePay() has not been implemented.');
+    throw UnimplementedError('linePay() has not been implemented.');
   }
 
   Future<void> redirectToLinePayPage({required String paymentUrl}) {
     throw UnimplementedError(
         'redirectToLinePayPage() has not been implemented.');
+  }
+
+  Future<void> jkoPay({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) {
+    throw UnimplementedError('jkoPay() has not been implemented.');
+  }
+
+  Future<void> redirectToJkoPayPage({required String paymentUrl}) {
+    throw UnimplementedError(
+        'redirectToJkoPayPage() has not been implemented.');
   }
 
   Stream<Map> get onResultReceived;
