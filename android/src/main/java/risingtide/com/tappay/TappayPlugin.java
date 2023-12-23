@@ -35,7 +35,7 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
     private MethodCall methodCall;
     private Result callResult;
     private ActivityPluginBinding activityBinding;
-    private Integer reqCode = 8787;
+    private final Integer reqCode = 8787;
     private EventChannel eventChannel;
     private EventChannel.EventSink eventSink;
 
@@ -66,6 +66,12 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
                 break;
             case "redirectToLinePayPage":
                 redirectToLinePayPage();
+                break;
+            case "jkoPay":
+                jkoPay();
+                break;
+            case "redirectToJkoPayPage":
+                redirectToJkoPayPage();
                 break;
         }
     }
@@ -122,6 +128,28 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
 
     private void redirectToLinePayPage() {
         Intent intent = new Intent(activityBinding.getActivity(), LinePayReturnActivity.class);
+        String paymentUrl = methodCall.argument("paymentUrl");
+        intent.putExtra("paymentUrl", paymentUrl);
+        activityBinding.getActivity().startActivityForResult(intent, reqCode);
+        callResult.success("SUCCESS");
+    }
+
+    private void jkoPay() {
+        Intent intent = new Intent(activityBinding.getActivity(), JkoPayActivity.class);
+        Integer appId = methodCall.argument("appId");
+        String appKey = methodCall.argument("appKey");
+        String serverType = methodCall.argument("serverType");
+        HashMap<String, Object> tpPayByPrimeModel = methodCall.argument("tpPayByPrimeModel");
+        intent.putExtra("appId", appId);
+        intent.putExtra("appKey", appKey);
+        intent.putExtra("serverType", serverType);
+        intent.putExtra("tpPayByPrimeModel", tpPayByPrimeModel);
+        activityBinding.getActivity().startActivityForResult(intent, reqCode);
+        callResult.success("SUCCESS");
+    }
+
+    private void redirectToJkoPayPage() {
+        Intent intent = new Intent(activityBinding.getActivity(), JkoPayReturnActivity.class);
         String paymentUrl = methodCall.argument("paymentUrl");
         intent.putExtra("paymentUrl", paymentUrl);
         activityBinding.getActivity().startActivityForResult(intent, reqCode);
