@@ -10,6 +10,24 @@
 
     <application>
         <activity
+            android:name=".EasyWalletActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EasyWalletReturnActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="risingtide.com"
+                    android:scheme="easywallet" />
+            </intent-filter>
+        </activity>
+        <activity
             android:name=".JkoPayActivity"
             android:exported="false" />
         <activity

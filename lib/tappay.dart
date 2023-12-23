@@ -84,5 +84,32 @@ class Tappay {
     }
   }
 
+  Future<void> easyWallet({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) async {
+    try {
+      await TappayPlatform.instance.easyWallet(
+        appId: appId,
+        appKey: appKey,
+        serverType: serverType,
+        tpPayByPrimeModel: tpPayByPrimeModel,
+      );
+    } on PlatformException catch (e) {
+      throw TappayPluginException(message: e.message ?? e.code);
+    }
+  }
+
+  Future<void> redirectToEasyWalletPage({required String paymentUrl}) async {
+    try {
+      await TappayPlatform.instance
+          .redirectToEasyWalletPage(paymentUrl: paymentUrl);
+    } on PlatformException catch (e) {
+      throw TappayPluginException(message: e.message ?? e.code);
+    }
+  }
+
   Stream<Map> get onResultReceived => TappayPlatform.instance.onResultReceived;
 }

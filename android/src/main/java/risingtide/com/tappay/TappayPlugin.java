@@ -73,6 +73,12 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
             case "redirectToJkoPayPage":
                 redirectToJkoPayPage();
                 break;
+            case "easyWallet":
+                easyWallet();
+                break;
+            case "redirectToEasyWalletPage":
+                redirectToEasyWalletPage();
+                break;
         }
     }
 
@@ -150,6 +156,28 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
 
     private void redirectToJkoPayPage() {
         Intent intent = new Intent(activityBinding.getActivity(), JkoPayReturnActivity.class);
+        String paymentUrl = methodCall.argument("paymentUrl");
+        intent.putExtra("paymentUrl", paymentUrl);
+        activityBinding.getActivity().startActivityForResult(intent, reqCode);
+        callResult.success("SUCCESS");
+    }
+
+    private void easyWallet() {
+        Intent intent = new Intent(activityBinding.getActivity(), EasyWalletActivity.class);
+        Integer appId = methodCall.argument("appId");
+        String appKey = methodCall.argument("appKey");
+        String serverType = methodCall.argument("serverType");
+        HashMap<String, Object> tpPayByPrimeModel = methodCall.argument("tpPayByPrimeModel");
+        intent.putExtra("appId", appId);
+        intent.putExtra("appKey", appKey);
+        intent.putExtra("serverType", serverType);
+        intent.putExtra("tpPayByPrimeModel", tpPayByPrimeModel);
+        activityBinding.getActivity().startActivityForResult(intent, reqCode);
+        callResult.success("SUCCESS");
+    }
+
+    private void redirectToEasyWalletPage() {
+        Intent intent = new Intent(activityBinding.getActivity(), EasyWalletReturnActivity.class);
         String paymentUrl = methodCall.argument("paymentUrl");
         intent.putExtra("paymentUrl", paymentUrl);
         activityBinding.getActivity().startActivityForResult(intent, reqCode);

@@ -105,6 +105,36 @@ class MethodChannelTappay extends TappayPlatform {
   }
 
   @override
+  Future<void> easyWallet({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) async {
+    try {
+      await methodChannel.invokeMethod<String>('easyWallet', {
+        'appId': appId,
+        'appKey': appKey,
+        'serverType': serverType.toString(),
+        'tpPayByPrimeModel': tpPayByPrimeModel.toMap(),
+      });
+    } on PlatformException catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> redirectToEasyWalletPage({required String paymentUrl}) async {
+    try {
+      await methodChannel.invokeMethod<String>('redirectToEasyWalletPage', {
+        'paymentUrl': paymentUrl,
+      });
+    } on PlatformException catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
   Stream<Map> get onResultReceived => eventChannel
       .receiveBroadcastStream()
       .map((dynamic event) => event as Map);

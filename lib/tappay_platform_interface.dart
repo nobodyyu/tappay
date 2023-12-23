@@ -67,5 +67,19 @@ abstract class TappayPlatform extends PlatformInterface {
         'redirectToJkoPayPage() has not been implemented.');
   }
 
+  Future<void> easyWallet({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) {
+    throw UnimplementedError('easyWallet() has not been implemented.');
+  }
+
+  Future<void> redirectToEasyWalletPage({required String paymentUrl}) {
+    throw UnimplementedError(
+        'redirectToEasyWalletPage() has not been implemented.');
+  }
+
   Stream<Map> get onResultReceived;
 }
