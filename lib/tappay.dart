@@ -111,5 +111,23 @@ class Tappay {
     }
   }
 
+  Future<void> googlePay({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) async {
+    try {
+      await TappayPlatform.instance.googlePay(
+        appId: appId,
+        appKey: appKey,
+        serverType: serverType,
+        tpPayByPrimeModel: tpPayByPrimeModel,
+      );
+    } on PlatformException catch (e) {
+      throw TappayPluginException(message: e.message ?? e.code);
+    }
+  }
+
   Stream<Map> get onResultReceived => TappayPlatform.instance.onResultReceived;
 }

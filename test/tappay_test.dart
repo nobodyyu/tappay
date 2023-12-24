@@ -50,6 +50,13 @@ class MockTappayPlatform
       required TPPayByPrimeModel tpPayByPrimeModel}) async {}
 
   @override
+  Future<void> googlePay(
+      {required int appId,
+      required String appKey,
+      required ServerType serverType,
+      required TPPayByPrimeModel tpPayByPrimeModel}) async {}
+
+  @override
   Future<void> redirectToEasyWalletPage({required String paymentUrl}) async {}
 
   @override

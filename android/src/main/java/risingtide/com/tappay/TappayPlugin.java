@@ -79,6 +79,9 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
             case "redirectToEasyWalletPage":
                 redirectToEasyWalletPage();
                 break;
+            case "googlePay":
+                googlePay();
+                break;
         }
     }
 
@@ -184,6 +187,20 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
         callResult.success("SUCCESS");
     }
 
+    private void googlePay() {
+        Intent intent = new Intent(activityBinding.getActivity(), GooglePayActivity.class);
+        Integer appId = methodCall.argument("appId");
+        String appKey = methodCall.argument("appKey");
+        String serverType = methodCall.argument("serverType");
+        HashMap<String, Object> tpPayByPrimeModel = methodCall.argument("tpPayByPrimeModel");
+        intent.putExtra("appId", appId);
+        intent.putExtra("appKey", appKey);
+        intent.putExtra("serverType", serverType);
+        intent.putExtra("tpPayByPrimeModel", tpPayByPrimeModel);
+        activityBinding.getActivity().startActivityForResult(intent, reqCode);
+        callResult.success("SUCCESS");
+    }
+
     @Override
     public void onListen(Object arguments, EventChannel.EventSink events) {
         eventSink = events;
@@ -197,7 +214,7 @@ public class TappayPlugin implements FlutterPlugin, MethodCallHandler, EventChan
     @Override
     public boolean onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if (requestCode == reqCode) {
-            assert data != null;
+            if (data == null) return false;
             Map<String, Object> dataFromTapPay = new HashMap<>();
             if (data.hasExtra("data")) {
                 dataFromTapPay.put("data", data.getSerializableExtra("data"));

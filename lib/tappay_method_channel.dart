@@ -135,6 +135,24 @@ class MethodChannelTappay extends TappayPlatform {
   }
 
   @override
+  Future<void> googlePay(
+      {required int appId,
+      required String appKey,
+      required ServerType serverType,
+      required TPPayByPrimeModel tpPayByPrimeModel}) async {
+    try {
+      await methodChannel.invokeMethod<String>('googlePay', {
+        'appId': appId,
+        'appKey': appKey,
+        'serverType': serverType.toString(),
+        'tpPayByPrimeModel': tpPayByPrimeModel.toMap(),
+      });
+    } on PlatformException catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
   Stream<Map> get onResultReceived => eventChannel
       .receiveBroadcastStream()
       .map((dynamic event) => event as Map);

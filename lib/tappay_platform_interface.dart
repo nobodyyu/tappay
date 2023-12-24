@@ -81,5 +81,14 @@ abstract class TappayPlatform extends PlatformInterface {
         'redirectToEasyWalletPage() has not been implemented.');
   }
 
+  Future<void> googlePay({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) {
+    throw UnimplementedError('googlePay() has not been implemented.');
+  }
+
   Stream<Map> get onResultReceived;
 }
