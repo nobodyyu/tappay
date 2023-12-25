@@ -1,4 +1,5 @@
 import 'package:flutter/services.dart';
+import 'package:tappay/merchant.dart';
 import 'package:tappay/tappay_plugin_exception.dart';
 import 'package:tappay/tp_pay_by_prime_model.dart';
 
@@ -6,6 +7,22 @@ import 'server_type.dart';
 import 'tappay_platform_interface.dart';
 
 class Tappay {
+  static Merchant getMerchantFromPrime(String prime) {
+    String merchantCode = prime.split('_')[0];
+    switch (merchantCode) {
+      case 'ln':
+        return Merchant.linePay;
+      case 'jk':
+        return Merchant.jkoPay;
+      case 'ew':
+        return Merchant.easyWallet;
+      case 'gp':
+        return Merchant.googlePay;
+      default:
+        return Merchant.directPay;
+    }
+  }
+
   Future<void> initialize(
       {required int appId,
       required String appKey,
