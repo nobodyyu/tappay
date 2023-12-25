@@ -32,10 +32,12 @@ abstract class TappayPlatform extends PlatformInterface {
     throw UnimplementedError('initialize() has not been implemented.');
   }
 
-  Future<void> showPayment(
-      {required int appId,
-      required String appKey,
-      required ServerType serverType}) {
+  Future<void> showPayment({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) {
     throw UnimplementedError('showPayment() has not been implemented.');
   }
 

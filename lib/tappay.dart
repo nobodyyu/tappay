@@ -35,13 +35,19 @@ class Tappay {
     }
   }
 
-  Future<void> showPayment(
-      {required int appId,
-      required String appKey,
-      required ServerType serverType}) async {
+  Future<void> showPayment({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) async {
     try {
-      await TappayPlatform.instance
-          .showPayment(appId: appId, appKey: appKey, serverType: serverType);
+      await TappayPlatform.instance.showPayment(
+        appId: appId,
+        appKey: appKey,
+        serverType: serverType,
+        tpPayByPrimeModel: tpPayByPrimeModel,
+      );
     } on PlatformException catch (e) {
       throw TappayPluginException(message: e.message ?? e.code);
     }

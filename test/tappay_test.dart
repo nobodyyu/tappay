@@ -15,10 +15,12 @@ class MockTappayPlatform
       required ServerType serverType}) async {}
 
   @override
-  Future<void> showPayment(
-      {required int appId,
-      required String appKey,
-      required ServerType serverType}) async {}
+  Future<void> showPayment({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) async {}
 
   @override
   Future<void> linePay({

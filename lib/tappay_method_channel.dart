@@ -29,15 +29,18 @@ class MethodChannelTappay extends TappayPlatform {
   }
 
   @override
-  Future<void> showPayment(
-      {required int appId,
-      required String appKey,
-      required ServerType serverType}) async {
+  Future<void> showPayment({
+    required int appId,
+    required String appKey,
+    required ServerType serverType,
+    required TPPayByPrimeModel tpPayByPrimeModel,
+  }) async {
     try {
       await methodChannel.invokeMethod<String>('showPayment', {
         'appId': appId,
         'appKey': appKey,
         'serverType': serverType.toString(),
+        'tpPayByPrimeModel': tpPayByPrimeModel.toMap(),
       });
     } on PlatformException catch (_) {
       rethrow;
