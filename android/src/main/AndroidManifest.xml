@@ -3,9 +3,9 @@
     package="risingtide.com.tappay">
 
     <queries>
-
-        <!-- for line pay open -->
         <package android:name="jp.naver.line.android" />
+        <package android:name="com.jkos.app" />
+        <package android:name="com.easycard.wallet" />
     </queries>
 
     <application>
