@@ -9,7 +9,7 @@
     <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/activity_payment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingLeft="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingRight="@dimen/activity_horizontal_margin"
@@ -22,25 +22,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/tipsTV"
             android:layout_centerHorizontal="true"
-            android:text="Pay!" />
-
-        <Button
-            android:id="@+id/getDeviceIdBTN"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_below="@id/payBTN"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:text="取得DeviceId" />
-
-        <Button
-            android:id="@+id/getCcvPrimeBTN"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_below="@id/tpdCcvInputForm"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:text="取得Ccv Prime" />
+            android:text="付款" />
 
         <TextView
             android:id="@+id/titleTV"
@@ -56,22 +38,6 @@
             android:layout_below="@id/tpdCardInputForm"
             android:layout_centerHorizontal="true"
             android:textColor="@android:color/holo_red_light" />
-
-        <TextView
-            android:id="@+id/statusTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/getCcvPrimeBTN"
-            android:layout_centerHorizontal="true"
-            android:textIsSelectable="true" />
-
-        <tech.cherri.tpdirect.api.TPDCcvForm
-            android:id="@+id/tpdCcvInputForm"
-            android:layout_width="270dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/getDeviceIdBTN"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"></tech.cherri.tpdirect.api.TPDCcvForm>
 
 
         <tech.cherri.tpdirect.api.TPDForm
