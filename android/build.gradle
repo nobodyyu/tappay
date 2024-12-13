@@ -68,7 +68,6 @@ dependencies {
     implementation 'androidx.navigation:navigation-fragment:2.8.5'
     implementation 'androidx.navigation:navigation-ui:2.8.5'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation(name: "tpdirect", ext: "aar")
     api 'com.google.android.gms:play-services-wallet:19.4.0'
     implementation fileTree(dir: 'libs', includes: ['*.aar'])
 
