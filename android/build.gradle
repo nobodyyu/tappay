@@ -19,16 +19,16 @@ rootProject.allprojects {
         maven {
             url "https://maven.google.com"
         }
-        flatDir {
-            dirs project(":tappay").file("libs")
-        }
+//        flatDir {
+//            dirs project(":tappay").file("libs")
+//        }
     }
 }
 
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 31
+    compileSdk 34
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -48,24 +48,28 @@ android {
     testOptions {
         unitTests.all {
             testLogging {
-               events "passed", "skipped", "failed", "standardOut", "standardError"
-               outputs.upToDateWhen {false}
-               showStandardStreams = true
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+                outputs.upToDateWhen { false }
+                showStandardStreams = true
             }
         }
     }
     buildFeatures {
         viewBinding true
     }
+    buildToolsVersion '34.0.0'
+
 }
 
 dependencies {
-    implementation 'com.google.android.material:material:1.8.0'
-    implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation 'androidx.navigation:navigation-fragment:2.5.3'
-    implementation 'androidx.navigation:navigation-ui:2.5.3'
+    implementation 'com.google.android.material:material:1.12.0'
+    implementation 'androidx.appcompat:appcompat:1.6.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.2.0'
+    implementation 'androidx.navigation:navigation-fragment:2.8.5'
+    implementation 'androidx.navigation:navigation-ui:2.8.5'
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation(name:"tpdirect",ext:"aar")
-    api 'com.google.android.gms:play-services-wallet:19.2.1'
+    implementation(name: "tpdirect", ext: "aar")
+    api 'com.google.android.gms:play-services-wallet:19.4.0'
+    implementation fileTree(dir: 'libs', includes: ['*.aar'])
+
 }
