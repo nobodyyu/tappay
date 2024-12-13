@@ -59,6 +59,8 @@ android {
     }
     buildToolsVersion '34.0.0'
 
+    namespace 'risingtide.com.tappay'
+
 }
 
 dependencies {
